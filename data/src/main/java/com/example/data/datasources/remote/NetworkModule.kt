@@ -5,13 +5,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class NetworkModule {
     companion object {
-        lateinit var ApiClient: UserApiService
+        private  var ApiClient: UserApiService? = null
         fun apiClient(): UserApiService {
-            return  Retrofit.Builder()
+            ApiClient?.let { ApiClient } ?: let {
+                ApiClient = Retrofit.Builder()
                     .baseUrl("https://5e510330f2c0d300147c034c.mockapi.io/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                     .create(UserApiService::class.java)
             }
+            return ApiClient!!
         }
     }
+}
